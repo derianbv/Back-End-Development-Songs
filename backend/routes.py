@@ -55,4 +55,13 @@ def parse_json(data):
 
 @app.route("/health")
 def heatlh(): 
-    return jsonify({"status":"OKOKOKOKKO"}), 200 
+    return jsonify({"status":"ok"}), 200
+
+
+@app.route("/count")
+def count(): 
+    count = db.songs.count_documents({})
+
+    return jsonify({"count":count}), 200
+
+
