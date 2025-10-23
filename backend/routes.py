@@ -77,3 +77,18 @@ def songs_id(id):
         return jsonify(parse_json(cursor)), 200 
         
     return jsonify({"message": "song not found"}), 404
+
+
+@app.route("/song", methods=["POST"])
+def create_song():
+
+    userInfo = request.get_json()
+    idUser = userInfo["id"]
+    cursor = db.songs.find_one({"id":int(idUser)})
+
+    if cursor: 
+        return (jsonify({"Message":f"song with id {idUser} already present"}), 302)
+    
+    result = db.songs.insert_one(userInfo) 
+    insertedID = result.inserted_id 
+    return jsonify({"inserted id": parse_json(insertedID)}),201 
