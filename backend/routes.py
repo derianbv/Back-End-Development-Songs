@@ -51,3 +51,8 @@ def parse_json(data):
 ######################################################################
 # INSERT CODE HERE
 ######################################################################
+
+
+@app.route("/health")
+def heatlh(): 
+    return jsonify({"status":"OKOKOKOKKO"}), 200 
