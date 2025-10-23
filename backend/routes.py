@@ -74,6 +74,6 @@ def songs():
 def songs_id(id): 
     cursor = db.songs.find_one({"id":int(id)})
     if cursor: 
-        return jsonify(cursor), 200 
+        return jsonify(parse_json(cursor)), 200 
         
     return jsonify({"message": "song not found"}), 404
