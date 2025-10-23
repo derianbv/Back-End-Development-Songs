@@ -2,6 +2,7 @@ from . import app
 import os
 import json
 import pymongo
+from pymongo import ReturnDocument
 from flask import jsonify, request, make_response, abort, url_for  # noqa; F401
 from pymongo import MongoClient
 from bson import json_util
@@ -92,3 +93,30 @@ def create_song():
     result = db.songs.insert_one(userInfo) 
     insertedID = result.inserted_id 
     return jsonify({"inserted id": parse_json(insertedID)}),201 
+
+
+
+@app.route("/song/<id>", methods=["PUT"])
+def update_song(id):
+        query = request.get_json()
+        update = db.songs.find_one_and_update(
+        {"id": int(id)},
+        {"$set": query},
+        return_document=ReturnDocument.AFTER  
+    )
+
+        if update: 
+            return (jsonify(parse_json(update)), 200)
+        
+        return {"message": "chanson non trouve"}, 404
+    
+
+@app.route("/song/<int:id>", methods=["DELETE"])
+def delete_song(id):
+    delete = db.songs.delete_one({"id": id})
+    
+    if delete.deleted_count: 
+        return jsonify({"message":"deleted bitch"}), 204 
+
+    return jsonify({"message":"song not found"}),404 
+    
