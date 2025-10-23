@@ -65,3 +65,7 @@ def count():
     return jsonify({"count":count}), 200
 
 
+@app.route("/song")
+def songs(): 
+        cursor = list(db.songs.find({}))
+        return jsonify({"songs":parse_json(cursor)}), 200
